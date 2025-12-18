@@ -1,0 +1,20 @@
+name = "radar_game"
+description = ""
+version = "0.1.0-dev"
+
+authors = ["Your Name"]
+maintainers = ["Your Name <example@example.com>"]
+licenses = "MIT OR Apache-2.0 WITH LLVM-exception"
+website = ""
+tags = []
+
+executables = ["radar_game"]
+
+[[depends-on]]
+openglada = "~0.9.0"
+
+[[depends-on]]
+openglada_glfw = "~0.9.0"
+
+[[depends-on]]
+openglada_images = "~0.9.0"
