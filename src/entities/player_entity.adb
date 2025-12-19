@@ -143,4 +143,15 @@ New_Ship : Player_Ship :=
       Ship_Entity.Load_Ship (Ship_Entity.Ship(Entity), Filename, X, Y);
    end Load_Ship;
 
+
+   overriding function Is_Active (Self : Player_Ship) return Boolean is
+   begin
+      return Self.Active;
+   end Is_Active;
+
+   overriding function Get_ID (Self : Player_Ship) return Integer is
+   begin
+      return Self.ID;
+   end Get_ID;
+
 end Player_Entity;

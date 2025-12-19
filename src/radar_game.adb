@@ -11,7 +11,9 @@ with GL.Types.Colors;
 with GL.Fixed.Matrix;
 with GL.Window;
 with Tile_Map;
+with Entity;
 with Player_Entity;
+with Entity_Manager;
 
 procedure Radar_Game is
    
@@ -19,7 +21,6 @@ procedure Radar_Game is
    Window_Height : constant Glfw.Size := 1200;
    
    Main_Window : aliased Glfw.Windows.Window;
-   Player_Ship : Player_Entity.Player_Ship;
    
    procedure Initialize is
       use GL.Fixed.Matrix;
@@ -66,12 +67,17 @@ procedure Radar_Game is
       Tile_Map.Load_Tileset ("resources/water.png");
       Tile_Map.Generate_Sample_Map;
       
-      -- Initialize ship system
-      Player_Entity.Initialize(Player_Ship);
-      Player_Ship := Player_Entity.Create_Ship(ID => 1,
+      -- Initialize player ship system
+      declare
+         Player : Entity.Entity_Ref := new Player_Entity.Player_Ship'(
+            Player_Entity.Create_Ship(ID => 1,
                                  X =>  GL.Types.Double (Window_Width) / 2.0,
                                  Y =>  GL.Types.Double (Window_Height) / 2.0,
-                                 Filename => "resources/ships/ship_large_body.png");
+                                 Filename => "resources/ships/ship_large_body.png"
+         ));
+      begin
+      Entity_Manager.Register(Player);
+      end;
       Ada.Text_IO.Put_Line ("Radar Game Initialized");
       Ada.Text_IO.Put_Line ("Press ESC to close");
    end Initialize;
@@ -87,7 +93,10 @@ procedure Radar_Game is
       Tile_Map.Render (GL.Types.Double (Current_Time));
       
       -- Render the ship with animated wake
-      Player_Entity.Render(Player_Ship, GL.Types.Double (Current_Time));
+      --  Player_Entity.Render(Player, GL.Types.Double (Current_Time));
+
+      -- Render other entities
+      Entity_Manager.Render_All(GL.Types.Double (Current_Time));
       
       -- Swap front and back buffers
       Glfw.Windows.Context.Swap_Buffers (Main_Window'Access);
@@ -103,15 +112,17 @@ procedure Radar_Game is
          if Main_Window.Key_State (Glfw.Input.Keys.Escape) = Glfw.Input.Pressed then
             Main_Window.Set_Should_Close (True);
          end if;
-         
-         -- Render the scene
+
+         -- Spawn other entities or handle game logic here
+         Entity_Manager.Update_All(GL.Types.Double (Glfw.Time));
+
          Render;
       end loop;
    end Main_Loop;
    
    procedure Cleanup is
    begin
-      Player_Entity.Cleanup(Player_Ship);
+      Entity_Manager.Cleanup_All;
       Tile_Map.Cleanup;
       Main_Window.Destroy;
       Glfw.Shutdown;

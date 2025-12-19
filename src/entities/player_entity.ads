@@ -9,14 +9,10 @@ package Player_Entity is
       Radar_Radius : Radar_Radius_Type := 0.0;
    end record;
 
-   overriding
-   procedure Initialize(Self : in out Player_Ship);
-   overriding
-   procedure Update(Self : in out Player_Ship; Delta_Time : GL.Types.Double);
-   overriding
-   procedure Render(Self : in Player_Ship; Delta_Time : GL.Types.Double);
-   overriding
-   procedure Cleanup(Self: in out Player_Ship);
+   overriding procedure Initialize(Self : in out Player_Ship);
+   overriding procedure Update(Self : in out Player_Ship; Delta_Time : GL.Types.Double);
+   overriding procedure Render(Self : in Player_Ship; Delta_Time : GL.Types.Double);
+   overriding procedure Cleanup(Self: in out Player_Ship);
 
    function Create_Ship (ID : Integer;
                         X, Y : GL.Types.Double;
@@ -25,5 +21,9 @@ package Player_Entity is
    procedure Load_Ship (Entity : in out Player_Ship;
                         Filename : String;
                         X, Y : GL.Types.Double);
+
+   overriding function Is_Active (Self : Player_Ship) return Boolean;
+
+   overriding function Get_ID (Self : Player_Ship) return Integer;
 
 end Player_Entity;

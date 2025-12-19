@@ -213,4 +213,15 @@ New_Ship : Ship :=
          Load_Ship (Entity => Entity, Filename => Filename);
    end Load_Ship;
 
+
+   overriding function Is_Active (Self : Ship) return Boolean is
+   begin
+      return Self.Active;
+   end Is_Active;
+
+   overriding function Get_ID (Self : Ship) return Integer is
+   begin
+      return Self.ID;
+   end Get_ID;
+
 end Ship_Entity;

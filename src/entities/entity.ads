@@ -13,6 +13,9 @@ package Entity is
    procedure Cleanup
      (Self : in out Entity_Interface) is abstract;
 
+   function Is_Active (Self : in Entity_Interface) return Boolean is abstract;
+   function Get_ID (Self : in Entity_Interface) return Integer is abstract;
+
    -- Concrete shared data
    type Entity_Type is tagged record
       ID        : Integer;
