@@ -11,7 +11,7 @@ with GL.Types.Colors;
 with GL.Fixed.Matrix;
 with GL.Window;
 with Tile_Map;
-with Ship;
+with Player_Entity;
 
 procedure Radar_Game is
    
@@ -19,7 +19,7 @@ procedure Radar_Game is
    Window_Height : constant Glfw.Size := 1200;
    
    Main_Window : aliased Glfw.Windows.Window;
-   Player_Ship : Ship.Ship_Entity;
+   Player_Ship : Player_Entity.Player_Ship;
    
    procedure Initialize is
       use GL.Fixed.Matrix;
@@ -67,12 +67,11 @@ procedure Radar_Game is
       Tile_Map.Generate_Sample_Map;
       
       -- Initialize ship system
-      Ship.Initialize;
-      Ship.Load_Ship (Player_Ship, 
-                      "resources/ships/ship_large_body.png",
-                      Double (Window_Width) / 2.0,
-                      Double (Window_Height) / 2.0);
-      
+      Player_Entity.Initialize(Player_Ship);
+      Player_Ship := Player_Entity.Create_Ship(ID => 1,
+                                 X =>  GL.Types.Double (Window_Width) / 2.0,
+                                 Y =>  GL.Types.Double (Window_Height) / 2.0,
+                                 Filename => "resources/ships/ship_large_body.png");
       Ada.Text_IO.Put_Line ("Radar Game Initialized");
       Ada.Text_IO.Put_Line ("Press ESC to close");
    end Initialize;
@@ -88,7 +87,7 @@ procedure Radar_Game is
       Tile_Map.Render (GL.Types.Double (Current_Time));
       
       -- Render the ship with animated wake
-      Ship.Render_Ship (Player_Ship, GL.Types.Double (Current_Time));
+      Player_Entity.Render(Player_Ship, GL.Types.Double (Current_Time));
       
       -- Swap front and back buffers
       Glfw.Windows.Context.Swap_Buffers (Main_Window'Access);
@@ -112,7 +111,7 @@ procedure Radar_Game is
    
    procedure Cleanup is
    begin
-      Ship.Cleanup;
+      Player_Entity.Cleanup(Player_Ship);
       Tile_Map.Cleanup;
       Main_Window.Destroy;
       Glfw.Shutdown;
