@@ -62,12 +62,10 @@ procedure Radar_Game is
       
       Ada.Text_IO.Put_Line ("Framebuffer size: " & Glfw.Size'Image (FB_Width) & "x" & Glfw.Size'Image (FB_Height));
       
-      -- Initialize tile map system
       Tile_Map.Initialize;
       Tile_Map.Load_Tileset ("resources/water.png");
       Tile_Map.Generate_Sample_Map;
       
-      -- Initialize player ship system
       declare
          Player : Entity.Entity_Ref := new Player_Entity.Player_Ship'(
             Player_Entity.Create_Ship(ID => 1,
@@ -78,6 +76,7 @@ procedure Radar_Game is
       begin
       Entity_Manager.Register(Player);
       end;
+
       Ada.Text_IO.Put_Line ("Radar Game Initialized");
       Ada.Text_IO.Put_Line ("Press ESC to close");
    end Initialize;
@@ -89,13 +88,8 @@ procedure Radar_Game is
       GL.Buffers.Set_Color_Clear_Value (GL.Types.Colors.Color'(0.2, 0.3, 0.4, 1.0));
       GL.Buffers.Clear ((Color => True, others => False));
       
-      -- Render the tile map (sea, beaches, land) with animation
       Tile_Map.Render (GL.Types.Double (Current_Time));
-      
-      -- Render the ship with animated wake
-      --  Player_Entity.Render(Player, GL.Types.Double (Current_Time));
 
-      -- Render other entities
       Entity_Manager.Render_All(GL.Types.Double (Current_Time));
       
       -- Swap front and back buffers
@@ -105,7 +99,6 @@ procedure Radar_Game is
    procedure Main_Loop is
    begin
       while not Main_Window.Should_Close loop
-         -- Process events
          Glfw.Input.Poll_Events;
          
          -- Check for ESC key
@@ -113,7 +106,6 @@ procedure Radar_Game is
             Main_Window.Set_Should_Close (True);
          end if;
 
-         -- Spawn other entities or handle game logic here
          Entity_Manager.Update_All(GL.Types.Double (Glfw.Time));
 
          Render;
