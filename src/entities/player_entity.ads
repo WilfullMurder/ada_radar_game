@@ -18,9 +18,8 @@ package Player_Entity is
                         X, Y : GL.Types.Double;
                         Filename: String) return Player_Ship;
 
-   procedure Load_Ship (Entity : in out Player_Ship;
-                        Filename : String;
-                        X, Y : GL.Types.Double);
+   overriding procedure Load_Ship (Entity : in out Player_Ship;
+                        Filename : String);
 
    overriding function Is_Active (Self : Player_Ship) return Boolean;
 

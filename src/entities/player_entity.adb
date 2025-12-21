@@ -48,7 +48,6 @@ New_Ship : Player_Ship :=
    overriding
    procedure Update(Self : in out Player_Ship; Delta_Time : Double) is
    begin
-      Put_Line ("Updating Player Entity: " & Integer'Image(Self.ID));
       -- Update logic for player ship entity can be added here
       null;
    end Update;
@@ -136,11 +135,10 @@ New_Ship : Player_Ship :=
       -- Cleanup logic for player ship entity can be added here
    end Cleanup;
 
-   procedure Load_Ship (Entity : in out Player_Ship;
-                        Filename : String;
-                        X, Y : GL.Types.Double) is
+   overriding procedure Load_Ship (Entity : in out Player_Ship;
+                        Filename : String) is
    begin
-      Ship_Entity.Load_Ship (Ship_Entity.Ship(Entity), Filename, X, Y);
+      Ship_Entity.Load_Ship (Ship_Entity.Ship(Entity), Filename);
    end Load_Ship;
 
 
