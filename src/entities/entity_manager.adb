@@ -1,4 +1,5 @@
 with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Containers.Vectors;
 with GL.Types;
 with Entity;
 
@@ -40,19 +41,26 @@ end Register;
 
 
 procedure Remove (Entity_ID : Integer) is
+E: Entity.Entity_Ref;
 begin
-   for E of V loop
+   for I in V.First_Index .. V.Last_Index loop
+      E := V(I); -- Variable copy
+      
       if E.Get_ID = Entity_ID then
          E.Cleanup;
+         Free(E);
+         V.Delete(I);
          exit;
       end if;
-   end loop;
+   end loop; 
 end Remove;
 
 procedure Cleanup_All is
    begin
       for E of V loop
          E.Cleanup;
+         Free(E);
       end loop;
+      V.Clear;
    end Cleanup_All;
 end Entity_Manager;
