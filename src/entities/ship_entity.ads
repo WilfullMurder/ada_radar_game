@@ -34,10 +34,6 @@ package Ship_Entity is
    procedure Load_Ship (Entity : in out Ship;
                         Filename : String);
 
-   procedure Load_Ship (Entity : in out Ship;
-                        Filename : String;
-                        X, Y : GL.Types.Double);
-
    overriding function Is_Active (Self : Ship) return Boolean;
 
    overriding function Get_ID (Self : Ship) return Integer;

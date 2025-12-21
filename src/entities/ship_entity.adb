@@ -4,7 +4,7 @@ with GL.Objects.Textures.Targets;
 with GL.Pixels;
 with GL.Images;
 with GL.Immediate;
---  with GL.Toggles;
+
 with Ada.Text_IO; use Ada.Text_IO;
 with Entity;
 
@@ -52,7 +52,7 @@ New_Ship : Ship :=
    begin
       Put_Line ("Updating Entity: " & Integer'Image(Self.ID));
       -- Update logic for ship entity can be added here
-      null;
+
    end Update;
 
    overriding
@@ -66,7 +66,7 @@ New_Ship : Ship :=
       if not Self.Active then
          return;
       end if;
-      null;
+
 
       -- Calculate ripple animation frame (4 frames per second, 5 total frames)
       Ripple_Frame := Integer (Delta_Time * 4.0) mod 5;
@@ -202,16 +202,6 @@ New_Ship : Ship :=
       Put_Line ("Ship Loaded: " & Filename);
    end Load_Ship;
 
-
-   procedure Load_Ship (Entity : in out Ship;
-                     Filename : String;
-                     X, Y : GL.Types.Double) is
-      begin
-         Entity.X := X;
-         Entity.Y := Y;
-         Entity.Rotation := 0.0;
-         Load_Ship (Entity => Entity, Filename => Filename);
-   end Load_Ship;
 
 
    overriding function Is_Active (Self : Ship) return Boolean is
