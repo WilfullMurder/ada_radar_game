@@ -12,7 +12,7 @@ package Entity_Manager is
       Element_Type => Entity.Entity_Ref
    );
 
-   V : Entity_Vector.Vector := Entity_Vector.Empty_Vector;
+
    
    procedure Initialize;
    
@@ -27,9 +27,11 @@ package Entity_Manager is
    procedure Cleanup_All;
 
 private
-procedure Free is new Ada.Unchecked_Deallocation(
-   Object => Entity.Entity_Interface'Class,
-   Name   => Entity.Entity_Ref
-);
+   V : Entity_Vector.Vector := Entity_Vector.Empty_Vector;
+
+   procedure Free is new Ada.Unchecked_Deallocation(
+      Object => Entity.Entity_Interface'Class,
+      Name   => Entity.Entity_Ref
+   );
 
 end Entity_Manager;
