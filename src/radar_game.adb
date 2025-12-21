@@ -11,7 +11,9 @@ with GL.Types.Colors;
 with GL.Fixed.Matrix;
 with GL.Window;
 with Tile_Map;
-with Ship;
+with Entity;
+with Player_Entity;
+with Entity_Manager;
 
 procedure Radar_Game is
    
@@ -19,7 +21,6 @@ procedure Radar_Game is
    Window_Height : constant Glfw.Size := 1200;
    
    Main_Window : aliased Glfw.Windows.Window;
-   Player_Ship : Ship.Ship_Entity;
    
    procedure Initialize is
       use GL.Fixed.Matrix;
@@ -61,18 +62,21 @@ procedure Radar_Game is
       
       Ada.Text_IO.Put_Line ("Framebuffer size: " & Glfw.Size'Image (FB_Width) & "x" & Glfw.Size'Image (FB_Height));
       
-      -- Initialize tile map system
       Tile_Map.Initialize;
       Tile_Map.Load_Tileset ("resources/water.png");
       Tile_Map.Generate_Sample_Map;
       
-      -- Initialize ship system
-      Ship.Initialize;
-      Ship.Load_Ship (Player_Ship, 
-                      "resources/ships/ship_large_body.png",
-                      Double (Window_Width) / 2.0,
-                      Double (Window_Height) / 2.0);
-      
+      declare
+         Player : Entity.Entity_Ref := new Player_Entity.Player_Ship'(
+            Player_Entity.Create_Ship(ID => 1,
+                                 X =>  GL.Types.Double (Window_Width) / 2.0,
+                                 Y =>  GL.Types.Double (Window_Height) / 2.0,
+                                 Filename => "resources/ships/ship_large_body.png"
+         ));
+      begin
+      Entity_Manager.Register(Player);
+      end;
+
       Ada.Text_IO.Put_Line ("Radar Game Initialized");
       Ada.Text_IO.Put_Line ("Press ESC to close");
    end Initialize;
@@ -84,11 +88,9 @@ procedure Radar_Game is
       GL.Buffers.Set_Color_Clear_Value (GL.Types.Colors.Color'(0.2, 0.3, 0.4, 1.0));
       GL.Buffers.Clear ((Color => True, others => False));
       
-      -- Render the tile map (sea, beaches, land) with animation
       Tile_Map.Render (GL.Types.Double (Current_Time));
-      
-      -- Render the ship with animated wake
-      Ship.Render_Ship (Player_Ship, GL.Types.Double (Current_Time));
+
+      Entity_Manager.Render_All(GL.Types.Double (Current_Time));
       
       -- Swap front and back buffers
       Glfw.Windows.Context.Swap_Buffers (Main_Window'Access);
@@ -97,22 +99,22 @@ procedure Radar_Game is
    procedure Main_Loop is
    begin
       while not Main_Window.Should_Close loop
-         -- Process events
          Glfw.Input.Poll_Events;
          
          -- Check for ESC key
          if Main_Window.Key_State (Glfw.Input.Keys.Escape) = Glfw.Input.Pressed then
             Main_Window.Set_Should_Close (True);
          end if;
-         
-         -- Render the scene
+
+         Entity_Manager.Update_All(GL.Types.Double (Glfw.Time));
+
          Render;
       end loop;
    end Main_Loop;
    
    procedure Cleanup is
    begin
-      Ship.Cleanup;
+      Entity_Manager.Cleanup_All;
       Tile_Map.Cleanup;
       Main_Window.Destroy;
       Glfw.Shutdown;
