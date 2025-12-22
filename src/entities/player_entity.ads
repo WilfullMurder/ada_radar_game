@@ -1,7 +1,7 @@
 with Ship_Entity;
 with GL.Types;
 with Control;
-with GLfw.Windows;
+with Glfw.Windows;
 package Player_Entity is
    use type Control.Control_Ref;
    
