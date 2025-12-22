@@ -1,7 +1,7 @@
 limited with Ship_Entity;
 with GL.Types;
 with Ada.Unchecked_Deallocation;
-with GLfw.Windows;
+with Glfw.Windows;
 
 package Control is
    type Control_Interface is interface;
