@@ -46,7 +46,7 @@ New_Ship : Player_Ship :=
      Ripple_Textures => (others => <>),
      Ripple_Width    => 0.0,
      Ripple_Height   => 0.0,
-     Controller     => null,
+     Controller => null,
      Radar_Radius    => 600.0);
    begin
       Load_Ship (Entity => New_Ship, Filename => Filename);
