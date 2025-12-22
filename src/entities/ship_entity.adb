@@ -6,6 +6,7 @@ with GL.Images;
 with GL.Immediate;
 with Glfw.Windows;
 with Ada.Text_IO; use Ada.Text_IO;
+with Control;
 with Entity;
 
 package body Ship_Entity is
