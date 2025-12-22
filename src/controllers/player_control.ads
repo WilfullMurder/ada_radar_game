@@ -1,7 +1,7 @@
 with Control;
 with GL.Types;
 with Ship_Entity;
-with GLfw.Windows;
+with Glfw.Windows;
 
 package Player_Control is
    type Player_Controller is new Control.Control_Interface with record
