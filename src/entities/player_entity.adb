@@ -56,9 +56,9 @@ New_Ship : Player_Ship :=
    overriding
    procedure Update(Self : in out Player_Ship; Window : in out Glfw.Windows.Window; Delta_Time : Double) is
    begin
-   if Self.Controller /= null then
-      Self.Controller.Step(Window, Delta_Time);
-   end if;
+      if Self.Controller /= null then
+         Self.Controller.Step(Window, Delta_Time);
+      end if;
    end Update;
 
    overriding
