@@ -68,7 +68,6 @@ New_Ship : Ship :=
          return;
       end if;
 
-
       -- Calculate ripple animation frame (4 frames per second, 5 total frames)
       Ripple_Frame := Integer (Delta_Time * 4.0) mod 5;
       

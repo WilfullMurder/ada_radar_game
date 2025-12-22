@@ -96,7 +96,6 @@ New_Ship : Player_Ship :=
                   Token.Add_Vertex (Vertex_Pos);
                end loop;
             end;
-
             -- Draw beam outline for better visibility
             GL.Immediate.Set_Color ((0.0, 1.0, 0.8, 0.8));  -- Brighter green
 
