@@ -3,7 +3,7 @@ with Ship_Entity;
 with GL.Types;
 with Input;
 with Key_Bindings;
-with GLfw.Windows;
+with Glfw.Windows;
 
 with Ada.Text_IO; use Ada.Text_IO;
 
