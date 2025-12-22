@@ -15,7 +15,7 @@ package Ship_Entity is
    with record
       Ripple_Textures : Ripple_Texture_Array;
       Ripple_Width, Ripple_Height : GL.Types.Double;
-      Controller: Control.Control_Ref; --OWNED
+      Controller : Control.Control_Ref; --OWNED
    end record;
 
 
