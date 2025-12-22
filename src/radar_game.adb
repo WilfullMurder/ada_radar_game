@@ -74,6 +74,7 @@ procedure Radar_Game is
                                  Filename => "resources/ships/ship_large_body.png"
          ));
       begin
+      Player.Initialize;
       Entity_Manager.Register(Player);
       end;
 
@@ -106,7 +107,7 @@ procedure Radar_Game is
             Main_Window.Set_Should_Close (True);
          end if;
 
-         Entity_Manager.Update_All(GL.Types.Double (Glfw.Time));
+         Entity_Manager.Update_All(Main_Window, GL.Types.Double (Glfw.Time));
 
          Render;
       end loop;
