@@ -1,13 +1,13 @@
 with GL.Types;
 with GL.Objects.Textures;
-
+with Glfw.Windows;
 package Entity is
 
    type Entity_Interface is interface;
 
    procedure Initialize (Self : in out Entity_Interface) is abstract;
    procedure Update
-     (Self : in out Entity_Interface; Delta_Time : GL.Types.Double) is abstract;
+     (Self : in out Entity_Interface; Window : in out Glfw.Windows.Window; Delta_Time : GL.Types.Double) is abstract;
    procedure Render
      (Self : in Entity_Interface; Delta_Time : GL.Types.Double) is abstract;
    procedure Cleanup

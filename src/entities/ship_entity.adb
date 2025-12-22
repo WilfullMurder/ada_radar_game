@@ -4,8 +4,9 @@ with GL.Objects.Textures.Targets;
 with GL.Pixels;
 with GL.Images;
 with GL.Immediate;
---  with GL.Toggles;
+with Glfw.Windows;
 with Ada.Text_IO; use Ada.Text_IO;
+with Control;
 with Entity;
 
 package body Ship_Entity is
@@ -41,18 +42,19 @@ New_Ship : Ship :=
    with
      Ripple_Textures => (others => <>),
      Ripple_Width    => 0.0,
-     Ripple_Height   => 0.0);
+     Ripple_Height   => 0.0,
+     Controller => null);
    begin
       Load_Ship (Entity => New_Ship, Filename => Filename);
       return New_Ship;
    end Create_Ship;
 
    overriding
-   procedure Update(Self : in out Ship; Delta_Time : GL.Types.Double) is
+   procedure Update(Self : in out Ship; Window : in out Glfw.Windows.Window; Delta_Time : GL.Types.Double) is
    begin
-      Put_Line ("Updating Entity: " & Integer'Image(Self.ID));
-      -- Update logic for ship entity can be added here
-      null;
+      if Self.Controller /= null then
+         Self.Controller.Step(Window, Delta_Time);
+      end if;
    end Update;
 
    overriding
@@ -66,7 +68,6 @@ New_Ship : Ship :=
       if not Self.Active then
          return;
       end if;
-      null;
 
       -- Calculate ripple animation frame (4 frames per second, 5 total frames)
       Ripple_Frame := Integer (Delta_Time * 4.0) mod 5;
@@ -146,8 +147,10 @@ New_Ship : Ship :=
    overriding
    procedure Cleanup(Self: in out Ship) is
    begin
-      Put_Line ("Cleaning up Entity: " & Integer'Image(Self.ID));
-      -- Cleanup logic for ship entity can be added here
+      if Self.Controller /= null then
+         Control.Free_Controller(Self.Controller);
+         Self.Controller := null;
+      end if;
       null;
    end Cleanup;
 
@@ -202,16 +205,6 @@ New_Ship : Ship :=
       Put_Line ("Ship Loaded: " & Filename);
    end Load_Ship;
 
-
-   procedure Load_Ship (Entity : in out Ship;
-                     Filename : String;
-                     X, Y : GL.Types.Double) is
-      begin
-         Entity.X := X;
-         Entity.Y := Y;
-         Entity.Rotation := 0.0;
-         Load_Ship (Entity => Entity, Filename => Filename);
-   end Load_Ship;
 
 
    overriding function Is_Active (Self : Ship) return Boolean is
