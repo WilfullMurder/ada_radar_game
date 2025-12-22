@@ -5,7 +5,7 @@ with GLfw.Windows;
 
 package Player_Control is
    type Player_Controller is new Control.Control_Interface with record
-      Owner: access Ship_Entity.Ship'Class := null;
+      Owner : access Ship_Entity.Ship'Class := null;
    end record;
 
    overriding procedure Bind
