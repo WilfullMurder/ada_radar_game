@@ -3,7 +3,7 @@ with "opengl-glfw";
 with "opengl-images";
 
 project Radar_Game is
-   for Source_Dirs use ("src", "src/entities");
+   for Source_Dirs use ("src", "src/controllers", "src/entities", "src/game", "src/input");
    for Object_Dir use "obj";
    for Exec_Dir use "bin";
    for Main use ("radar_game.adb");
