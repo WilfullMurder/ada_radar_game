@@ -1,7 +1,9 @@
 with Ship_Entity;
 with GL.Types;
-
+with Control;
+with GLfw.Windows;
 package Player_Entity is
+   use type Control.Control_Ref;
    
    type Radar_Radius_Type is new GL.Types.Double range 0.0 .. 800.0;
 
@@ -10,7 +12,7 @@ package Player_Entity is
    end record;
 
    overriding procedure Initialize(Self : in out Player_Ship);
-   overriding procedure Update(Self : in out Player_Ship; Delta_Time : GL.Types.Double);
+   overriding procedure Update(Self : in out Player_Ship; Window : in out Glfw.Windows.Window; Delta_Time : GL.Types.Double);
    overriding procedure Render(Self : in Player_Ship; Delta_Time : GL.Types.Double);
    overriding procedure Cleanup(Self: in out Player_Ship);
 

@@ -1,8 +1,12 @@
 with Entity;
+with Control;
 with GL.Types;
 with GL.Objects.Textures;
+with Glfw.Windows;
 
 package Ship_Entity is
+   use type Control.Control_Ref;
+
    type Ripple_Texture_Array is array (0 .. 4) of GL.Objects.Textures.Texture;
 
    type Ship is 
@@ -11,6 +15,7 @@ package Ship_Entity is
    with record
       Ripple_Textures : Ripple_Texture_Array;
       Ripple_Width, Ripple_Height : GL.Types.Double;
+      Controller: Control.Control_Ref; --OWNED
    end record;
 
 
@@ -23,7 +28,7 @@ package Ship_Entity is
                            Filename: String) return Ship;
 
    overriding
-   procedure Update(Self : in out Ship; Delta_Time : GL.Types.Double);
+   procedure Update(Self : in out Ship; Window : in out Glfw.Windows.Window; Delta_Time : GL.Types.Double);
 
    overriding
    procedure Render(Self : in Ship; Delta_Time : GL.Types.Double);

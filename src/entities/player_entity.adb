@@ -1,10 +1,12 @@
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Numerics;
 with Ada.Numerics.Generic_Elementary_Functions;
+with Control;
 with GL.Immediate;
 with GL.Toggles;
-
 with Entity;
+with Player_Control;
+with Glfw.Windows;
 
 package body Player_Entity is
 
@@ -17,8 +19,13 @@ package body Player_Entity is
 
    overriding
    procedure Initialize(Self : in out Player_Ship) is
+   Controller: Control.Control_Ref;
    begin
-      Put_Line("Player ship entity system for: " & Integer'Image(Self.ID) & " initialized");
+      Ship_Entity.Initialize(Ship_Entity.Ship(Self));
+      
+      Controller := new Player_Control.Player_Controller'(others => <>);
+      Controller.Bind(Self'Unchecked_Access);
+      Self.Controller := Controller;
    end Initialize;
 
    function Create_Ship (ID : Integer;
@@ -39,6 +46,7 @@ New_Ship : Player_Ship :=
      Ripple_Textures => (others => <>),
      Ripple_Width    => 0.0,
      Ripple_Height   => 0.0,
+     Controller     => null,
      Radar_Radius    => 600.0);
    begin
       Load_Ship (Entity => New_Ship, Filename => Filename);
@@ -46,10 +54,11 @@ New_Ship : Player_Ship :=
    end Create_Ship;
 
    overriding
-   procedure Update(Self : in out Player_Ship; Delta_Time : Double) is
+   procedure Update(Self : in out Player_Ship; Window : in out Glfw.Windows.Window; Delta_Time : Double) is
    begin
-      -- Update logic for player ship entity can be added here
-      null;
+   if Self.Controller /= null then
+      Self.Controller.Step(Window, Delta_Time);
+   end if;
    end Update;
 
    overriding
@@ -131,8 +140,10 @@ New_Ship : Player_Ship :=
    overriding
    procedure Cleanup(Self: in out Player_Ship) is
    begin
-      Put_Line("Cleaning up Player Ship entity: " & Integer'Image(Self.ID));
-      -- Cleanup logic for player ship entity can be added here
+      if Self.Controller /= null then
+         Control.Free_Controller (Self.Controller);
+         Self.Controller := null;
+      end if;
    end Cleanup;
 
    overriding procedure Load_Ship (Entity : in out Player_Ship;
