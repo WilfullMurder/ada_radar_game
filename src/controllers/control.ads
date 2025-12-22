@@ -23,5 +23,3 @@ package Control is
    (Control.Control_Interface'Class, Control_Ref);
 
 end Control;
-   
-   
