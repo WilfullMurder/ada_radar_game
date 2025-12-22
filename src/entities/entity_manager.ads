@@ -2,6 +2,7 @@ with Ada.Containers.Vectors;
 with Ada.Unchecked_Deallocation;
 with Entity;
 with GL.Types;
+with Glfw.Windows;
 
 package Entity_Manager is
 
@@ -16,7 +17,7 @@ package Entity_Manager is
    
    procedure Initialize;
    
-   procedure Update_All(Delta_Time: GL.Types.Double);
+   procedure Update_All(Window : in out Glfw.Windows.Window; Delta_Time: GL.Types.Double);
    
    procedure Render_All(Delta_Time: GL.Types.Double);
 

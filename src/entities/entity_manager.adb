@@ -2,6 +2,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Containers.Vectors;
 with GL.Types;
 with Entity;
+with Glfw.Windows;
 
 package body Entity_Manager is
 
@@ -11,12 +12,12 @@ begin
 end Initialize;
 
 
-procedure Update_All (Delta_Time : GL.Types.Double) is
+procedure Update_All (Window : in out Glfw.Windows.Window; Delta_Time : GL.Types.Double) is
 begin
    for E of V loop
       begin
          if E.Is_Active then
-            E.Update(Delta_Time);
+            E.Update(Window, Delta_Time);
          end if;
       end;
    end loop;
