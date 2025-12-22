@@ -8,7 +8,7 @@ package Control is
 
    type Control_Ref is access all Control.Control_Interface'Class;
 
-      procedure Bind
+   procedure Bind
      (Self  : in out Control_Interface;
       Owner : not null access Ship_Entity.Ship'Class) is abstract;
 
