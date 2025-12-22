@@ -20,7 +20,7 @@ package Control is
    procedure Pause(Self : in out Control_Interface) is abstract;
 
    procedure Free_Controller is new Ada.Unchecked_Deallocation
-  (Control.Control_Interface'Class, Control_Ref);
+   (Control.Control_Interface'Class, Control_Ref);
 
 end Control;
    
