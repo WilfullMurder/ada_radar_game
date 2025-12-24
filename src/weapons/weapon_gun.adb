@@ -4,7 +4,7 @@ with Weapons;
 
 package body Weapon_Gun is
 
-   overriding procedure Initialize(Self : in out Gun; Owner : not null access Entity.Entity_Interface'Class) is
+   overriding procedure Initialize(Self : in out Gun; Owner : access Entity.Entity_Interface'Class) is
    begin
       -- Call base class initializer
       Weapons.Weapon_Base(Self).Initialize(Owner);
@@ -22,5 +22,4 @@ package body Weapon_Gun is
       Put_Line("Gun auto-fired!");
       -- TODO: Spawn bullet (Line trace via shader?), aim at Self.Target if set
    end Fire;
-      
 end Weapon_Gun;

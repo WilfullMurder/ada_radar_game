@@ -152,6 +152,7 @@ New_Ship : Ship :=
 
       for W of Self.Weapons loop
          W.Cleanup;
+         Weapons.Free_Weapon(W);
       end loop;
       Self.Weapons.Clear;
    end Cleanup;

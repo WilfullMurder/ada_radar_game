@@ -3,7 +3,7 @@ with GL.Types; use GL.Types;
 with Weapons;
 
 package body Weapon_Missile is
-   overriding procedure Initialize(Self : in out Missile_Launcher; Owner : not null access Entity.Entity_Interface'Class) is
+   overriding procedure Initialize(Self : in out Missile_Launcher; Owner : access Entity.Entity_Interface'Class) is
    begin
       -- Call base class initializer
       Weapons.Weapon_Base(Self).Initialize(Owner);
@@ -15,7 +15,7 @@ package body Weapon_Missile is
    begin
       if Self.Can_Fire(Delta_Time) then
          Self.Fire(Delta_Time);
-         Self.Next_Fire_Time := Delta_Time + GL.Types.Double(Self.Cooldown);
+         Self.Next_Fire_Time := Delta_Time + Self.Cooldown;
       end if;
    end On_Input_Fire;
 

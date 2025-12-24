@@ -60,7 +60,7 @@ New_Ship : Player_Ship :=
      Ripple_Height   => 0.0,
      Controller => null,
      Radar_Radius    => 600.0,
-     Weapons => Ship_Entity.Weapon_Vector.Empty_Vector);
+     Weapons => Ship_Entity.Weapon_Vector.Empty);
    begin
       Load_Ship (Entity => New_Ship, Filename => Filename);
       return New_Ship;

@@ -5,7 +5,7 @@ with Ada.Unchecked_Deallocation;
 package Weapons is
    type Weapon_Interface is interface;
 
-   procedure Initialize(Self : in out Weapon_Interface; Owner : not null access Entity.Entity_Interface'Class) is abstract;
+   procedure Initialize(Self : in out Weapon_Interface; Owner : access Entity.Entity_Interface'Class) is abstract;
    procedure Update(Self : in out Weapon_Interface; Delta_Time : GL.Types.Double) is abstract;
    procedure On_Input_Fire(Self : in out Weapon_Interface; Delta_Time : GL.Types.Double) is abstract;
    procedure Set_Target(Self : in out Weapon_Interface; Target_Entity : Entity.Entity_Ref) is abstract;
@@ -28,12 +28,12 @@ package Weapons is
       Target : Entity.Entity_Ref := null;
    end record;
 
-   overriding procedure Initialize(Self : in out Weapon_Base; Owner : not null access Entity.Entity_Interface'Class);
+   overriding procedure Initialize(Self : in out Weapon_Base; Owner : access Entity.Entity_Interface'Class);
    overriding procedure Update(Self : in out Weapon_Base; Delta_Time : GL.Types.Double);
    overriding procedure On_Input_Fire(Self : in out Weapon_Base; Delta_Time : GL.Types.Double);
-   overriding procedure Set_Target(Self : in out Weapon_Base; Target : Entity.Entity_Ref);
+   overriding procedure Set_Target(Self : in out Weapon_Base; Target_Entity : Entity.Entity_Ref);
    overriding function Can_Fire(Self : Weapon_Base; Delta_Time : GL.Types.Double) return Boolean;
    overriding procedure Fire(Self : in out Weapon_Base; Delta_Time : GL.Types.Double);
    overriding procedure Cleanup(Self : in out Weapon_Base);
 
-end Weapons; 
+end Weapons;
