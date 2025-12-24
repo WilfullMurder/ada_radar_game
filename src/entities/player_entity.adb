@@ -1,12 +1,16 @@
-with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Numerics;
 with Ada.Numerics.Generic_Elementary_Functions;
-with Control;
 with GL.Immediate;
 with GL.Toggles;
-with Entity;
-with Player_Control;
 with Glfw.Windows;
+with Control;
+with Entity;
+with Ship_Entity;
+with Weapons;
+with Weapon_Gun;
+with Weapon_Missile;
+with Player_Control;
+
 
 package body Player_Entity is
 
@@ -26,6 +30,14 @@ package body Player_Entity is
       Controller := new Player_Control.Player_Controller'(others => <>);
       Controller.Bind(Self'Unchecked_Access);
       Self.Controller := Controller;
+
+      declare
+         Gun : Weapons.Weapon_Ref := new Weapon_Gun.Gun'(others => <>);
+         Missile : Weapons.Weapon_Ref := new Weapon_Missile.Missile_Launcher'(others => <>);
+      begin
+         Ship_Entity.Add_Weapon(Ship_Entity.Ship(Self), Gun);
+         Ship_Entity.Add_Weapon(Ship_Entity.Ship(Self), Missile);
+      end;
    end Initialize;
 
    function Create_Ship (ID : Integer;
@@ -47,7 +59,8 @@ New_Ship : Player_Ship :=
      Ripple_Width    => 0.0,
      Ripple_Height   => 0.0,
      Controller => null,
-     Radar_Radius    => 600.0);
+     Radar_Radius    => 600.0,
+     Weapons => Ship_Entity.Weapon_Vector.Empty);
    begin
       Load_Ship (Entity => New_Ship, Filename => Filename);
       return New_Ship;
@@ -59,6 +72,8 @@ New_Ship : Player_Ship :=
       if Self.Controller /= null then
          Self.Controller.Step(Window, Delta_Time);
       end if;
+      -- Note: Ship_Entity.Update will handle weapon updates if called.
+      -- Here we keep player-specific logic; base Ship handles auto-fire updates now.
    end Update;
 
    overriding

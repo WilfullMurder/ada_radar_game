@@ -18,5 +18,5 @@ package State is
    procedure Set_Game_Over;
 
 private
-      Current_State : Game_State := Playing;
+   Current_State : Game_State := Playing;
 end State;
