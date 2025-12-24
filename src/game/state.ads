@@ -15,8 +15,8 @@ package State is
    procedure Resume;
    procedure Show_Menu;
    procedure Start_Playing;
-   procedure Game_Over;
+   procedure Set_Game_Over;
 
-   private
+private
       Current_State : Game_State := Playing;
 end State;
