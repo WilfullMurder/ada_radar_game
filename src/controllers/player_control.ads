@@ -6,7 +6,12 @@ with Glfw.Windows;
 package Player_Control is
    type Player_Controller is new Control.Control_Interface with record
       Owner : access Ship_Entity.Ship'Class := null;
+      Prev_Cycle_Left : Boolean := False;
+      Prev_Cycle_Right : Boolean := False;
+      Prev_Pause       : Boolean := False;
    end record;
+
+
 
    overriding procedure Bind
      (Self  : in out Player_Controller;
@@ -18,4 +23,4 @@ package Player_Control is
    overriding procedure Cycle_Target_Right(Self : in out Player_Controller);
    overriding procedure Pause(Self : in out Player_Controller);
 
-end Player_Control;
+end Player_Control; 

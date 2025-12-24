@@ -2,7 +2,6 @@ with Ada.Text_IO;
 with Glfw;
 with Glfw.Windows;
 with Glfw.Windows.Context;
-with Glfw.Windows.Hints;
 with Glfw.Input; use Glfw.Input;
 with Glfw.Input.Keys;
 with GL.Buffers;
