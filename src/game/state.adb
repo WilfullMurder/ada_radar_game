@@ -59,9 +59,9 @@ package body State is
          Set_State(Playing);
       end Start_Playing;
 
-      procedure Game_Over is
+      procedure Set_Game_Over is
       begin
          Set_State(Game_Over);
-      end Game_Over;
+      end Set_Game_Over;
 
 end State;
