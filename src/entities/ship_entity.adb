@@ -1,5 +1,3 @@
-with Ada.Numerics;
-with Ada.Numerics.Generic_Elementary_Functions;
 with GL.Objects.Textures.Targets;
 with GL.Pixels;
 with GL.Images;
@@ -8,14 +6,12 @@ with Glfw.Windows;
 with Ada.Text_IO; use Ada.Text_IO;
 with Control;
 with Entity;
+with Weapons;
+with State;
 
 package body Ship_Entity is
 
    use GL.Types;
-   use GL.Types.Doubles;
-   
-   package Double_Math is new Ada.Numerics.Generic_Elementary_Functions (Double);
-   use Double_Math;
    use GL.Types.Doubles;
 
    overriding
@@ -31,19 +27,20 @@ package body Ship_Entity is
 
 New_Ship : Ship :=
   (Entity.Entity_Type'
-     (ID        => ID,
-      X         => X,
-      Y         => Y,
-      Rotation  => 0.0,
-      Width     => 0.0,
-      Height    => 0.0,
-      Texture   => <>,
-      Active    => True)
+     (ID => ID,
+      X => X,
+      Y => Y,
+      Rotation => 0.0,
+      Width => 0.0,
+      Height => 0.0,
+      Texture => <>,
+      Active => True)
    with
      Ripple_Textures => (others => <>),
-     Ripple_Width    => 0.0,
-     Ripple_Height   => 0.0,
-     Controller => null);
+     Ripple_Width => 0.0,
+     Ripple_Height => 0.0,
+     Controller => null,
+     Weapons => Weapon_Vector.Empty);
    begin
       Load_Ship (Entity => New_Ship, Filename => Filename);
       return New_Ship;
@@ -54,6 +51,10 @@ New_Ship : Ship :=
    begin
       if Self.Controller /= null then
          Self.Controller.Step(Window, Delta_Time);
+      end if;
+
+      if State.Should_Update_Entities then
+         Update_Weapons(Self, Delta_Time);
       end if;
    end Update;
 
@@ -139,9 +140,6 @@ New_Ship : Ship :=
          Vertex_Pos := (Self.X - Half_Width, Self.Y - Half_Height);
          Token.Add_Vertex (Vertex_Pos);
       end;
-
-
-      
    end Render;
 
    overriding
@@ -151,7 +149,11 @@ New_Ship : Ship :=
          Control.Free_Controller(Self.Controller);
          Self.Controller := null;
       end if;
-      null;
+
+      for W of Self.Weapons loop
+         W.Cleanup;
+      end loop;
+      Self.Weapons.Clear;
    end Cleanup;
 
    procedure Load_Ship (Entity : in out Ship;
@@ -205,7 +207,25 @@ New_Ship : Ship :=
       Put_Line ("Ship Loaded: " & Filename);
    end Load_Ship;
 
+   procedure Add_Weapon (Entity : in out Ship; W : Weapons.Weapon_Ref) is
+   begin
+      Entity.Weapons.Append(W);
+      W.Initialize(Entity'Unchecked_Access);
+   end Add_Weapon;
 
+   procedure Update_Weapons (Entity : in out Ship; Delta_Time : GL.Types.Double) is
+   begin
+      for W of Entity.Weapons loop
+         W.Update(Delta_Time);
+      end loop;
+   end Update_Weapons;
+
+   procedure Trigger_Input_Weapons (Entity : in out Ship; Delta_Time : GL.Types.Double) is
+   begin
+      for W of Entity.Weapons loop
+         W.On_Input_Fire(Delta_Time);
+      end loop;
+   end Trigger_Input_Weapons;
 
    overriding function Is_Active (Self : Ship) return Boolean is
    begin
