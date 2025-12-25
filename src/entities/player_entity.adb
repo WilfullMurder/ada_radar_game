@@ -19,7 +19,6 @@ package body Player_Entity is
    
    package Double_Math is new Ada.Numerics.Generic_Elementary_Functions (Double);
    use Double_Math;
-   use GL.Types.Doubles;
 
    overriding
    procedure Initialize(Self : in out Player_Ship) is
@@ -53,7 +52,8 @@ New_Ship : Player_Ship :=
       Width     => 0.0,
       Height    => 0.0,
       Texture   => <>,
-      Active    => True)
+      Active    => True,
+      Health_Comp   => (Max_Health => 100, Current_Health => 100))
    with
      Ripple_Textures => (others => <>),
      Ripple_Width    => 0.0,

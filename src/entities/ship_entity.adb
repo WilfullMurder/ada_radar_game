@@ -8,6 +8,7 @@ with Control;
 with Entity;
 with Weapons;
 with State;
+with Health;
 
 package body Ship_Entity is
 
@@ -17,6 +18,7 @@ package body Ship_Entity is
    overriding
    procedure Initialize(Self : in out Ship) is
    begin
+      Health.Initialize(Self.Health_Comp, 100);
       Put_Line("Ship entity system for: " & Integer'Image(Self.ID) & " initialized");
    end Initialize;
 
@@ -34,7 +36,8 @@ New_Ship : Ship :=
       Width => 0.0,
       Height => 0.0,
       Texture => <>,
-      Active => True)
+      Active => True,
+      Health_Comp => (Max_Health => 100, Current_Health => 100))
    with
      Ripple_Textures => (others => <>),
      Ripple_Width => 0.0,

@@ -1,6 +1,7 @@
 with GL.Types;
 with GL.Objects.Textures;
 with Glfw.Windows;
+with Health;
 package Entity is
 
    type Entity_Interface is interface;
@@ -25,6 +26,7 @@ package Entity is
       Height    : GL.Types.Double;
       Texture   : GL.Objects.Textures.Texture;
       Active    : Boolean := True;
+      Health_Comp : Health.Health_Component := (others => <>);
    end record;
 
    type Entity_Ref is access all Entity_Interface'Class;
