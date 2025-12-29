@@ -2,6 +2,7 @@ with GL.Types;
 with GL.Objects.Textures;
 with Glfw.Windows;
 with Health;
+with Collision;
 package Entity is
 
    type Entity_Interface is interface;
@@ -27,6 +28,7 @@ package Entity is
       Texture   : GL.Objects.Textures.Texture;
       Active    : Boolean := True;
       Health_Comp : Health.Health_Component := (others => <>);
+      Collision_Comp : Collision.Collision_Component := (others => <>);
    end record;
 
    type Entity_Ref is access all Entity_Interface'Class;

@@ -1,3 +1,4 @@
+with Collision;
 with GL.Objects.Textures.Targets;
 with GL.Pixels;
 with GL.Images;
@@ -19,6 +20,7 @@ package body Ship_Entity is
    procedure Initialize(Self : in out Ship) is
    begin
       Health.Initialize(Self.Health_Comp, 100);
+      Collision.Initialize(Self.Collision_Comp, Collision.Bounding_Circle(Self.Width, Self.Height));
       Put_Line("Ship entity system for: " & Integer'Image(Self.ID) & " initialized");
    end Initialize;
 
@@ -37,7 +39,8 @@ New_Ship : Ship :=
       Height => 0.0,
       Texture => <>,
       Active => True,
-      Health_Comp => (Max_Health => 100, Current_Health => 100))
+      Health_Comp => (Max_Health => 100, Current_Health => 100),
+      Collision_Comp => (Radius => 1.0))
    with
      Ripple_Textures => (others => <>),
      Ripple_Width => 0.0,

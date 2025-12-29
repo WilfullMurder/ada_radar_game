@@ -53,7 +53,8 @@ New_Ship : Player_Ship :=
       Height    => 0.0,
       Texture   => <>,
       Active    => True,
-      Health_Comp   => (Max_Health => 100, Current_Health => 100))
+      Health_Comp   => (Max_Health => 100, Current_Health => 100),
+      Collision_Comp => (Radius => 1.0))
    with
      Ripple_Textures => (others => <>),
      Ripple_Width    => 0.0,
