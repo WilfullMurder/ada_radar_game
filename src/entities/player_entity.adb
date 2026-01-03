@@ -1,10 +1,14 @@
+with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Numerics;
 with Ada.Numerics.Generic_Elementary_Functions;
+with GL.Blending;
 with GL.Immediate;
 with GL.Toggles;
 with Glfw.Windows;
 with Control;
+with Collision;
 with Entity;
+with Logger;
 with Ship_Entity;
 with Weapons;
 with Weapon_Gun;
@@ -37,6 +41,7 @@ package body Player_Entity is
          Ship_Entity.Add_Weapon(Ship_Entity.Ship(Self), Gun);
          Ship_Entity.Add_Weapon(Ship_Entity.Ship(Self), Missile);
       end;
+      Self.Collision_Comp.Radius := Collision.Bounding_Circle(Self.Width, Self.Height);
    end Initialize;
 
    function Create_Ship (ID : Integer;
@@ -146,6 +151,9 @@ New_Ship : Player_Ship :=
 
          -- Draw second beam opposite to first (180 degrees apart)
          Draw_Beam (Base_Angle + Pi);
+
+         -- TODO: Wrap in debug flag
+         Collision.Render(Self.Collision_Comp, Self.X, Self.Y);
 
          GL.Immediate.Set_Color ((1.0, 1.0, 1.0, 1.0));
          GL.Toggles.Enable(GL.Toggles.Texture_2D);

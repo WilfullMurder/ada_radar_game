@@ -1,11 +1,11 @@
-with Collision;
+with Ada.Text_IO; use Ada.Text_IO;
 with GL.Objects.Textures.Targets;
 with GL.Pixels;
 with GL.Images;
 with GL.Immediate;
 with Glfw.Windows;
-with Ada.Text_IO; use Ada.Text_IO;
 with Control;
+with Collision;
 with Entity;
 with Weapons;
 with State;
